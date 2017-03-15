@@ -1,0 +1,40 @@
+{
+  "name": "myPorject",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . MyApp --platform=mas --arch=x64 --out ../test/ --ignore=node_modules/ --overwrite"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^1.4.1",
+    "electron-builder": "^15.4.3",
+    "electron-connect": "^0.6.0",
+    "electron-packager": "^8.5.2",
+    "electron-prebuilt": "^1.4.13",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-swig": "^0.8.0",
+    "run-sequence": "^1.2.2"
+  },
+  "dependencies": {
+    "element-ui": "^1.2.3",
+    "jquery": "^2.2.4",
+    "lodash": "^4.16.6",
+    "vue": "^2.1.6"
+  }
+}

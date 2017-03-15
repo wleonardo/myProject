@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>项目管理</title>
+  <link rel="stylesheet" href="../style/main.css">
+</head>
+
+<body class="skin-blue sidebar-mini">
+  <h1>项目管理</h1>
+  <!-- All of the Node.js APIs are available in this renderer process. -->
+  <div class="wrapper" id="main">
+    <div class="content">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">系统环境</h3>
+          <button type="button" class="btn pull-right btn-primary btn-xs" data-toggle="modal" data-target="#myModal">新增项目</button>
+          <button type="button" class="btn pull-right btn-info btn-xs" style="margin-right: 10px" @click="getNodeVersion()">系统配置</button>
+        </div>
+        <!-- /.box-header -->
+        <a href="" v-for="d in projectInfo"></a>
+        <div class="box-body">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th style="width: 10px">#</th>
+                <th>项目名字</th>
+                <th>项目地址</th>
+                <th>Node版本</th>
+                <th>启动命令</th>
+                <th style="width: 150px">操作</th>
+              </tr>
+              <tr v-for="d in projectInfo">
+                <td>{{$index + 1}}</td>
+                <td>{{d.name}}</td>
+                <td>{{d.path}}</td>
+                <td>{{d.nodeVersion}}</td>
+                <td>{{d.startCmd}}</td>
+                <td>
+                  <button type="button" class="btn btn-info btn-xs" @click="showProjectInfo(d)">修改配置</button>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-xs" @click="startProject(d)">启动</button>
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a @click="openProjectInIDE(d)">在IDE中打开</a></li>
+                      <li><a @click="openProject(d)">打开文件夹</a></li>
+                      <li><a @click="buildProject(d)">构建项目</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">项目列表</h3>
+          <button type="button" class="btn pull-right btn-primary btn-xs" data-toggle="modal" data-target="#myModal">新增项目</button>
+          <button type="button" class="btn pull-right btn-info btn-xs" style="margin-right: 10px" data-toggle="modal" data-target="#systemModal">系统配置</button>
+        </div>
+        <!-- /.box-header -->
+        <a href="" v-for="d in projectInfo"></a>
+        <div class="box-body">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th style="width: 10px">#</th>
+                <th>项目名字</th>
+                <th>项目地址</th>
+                <th>Node版本</th>
+                <th>启动命令</th>
+                <th style="width: 150px">操作</th>
+              </tr>
+              <tr v-for="d in projectInfo">
+                <td>{{$index + 1}}</td>
+                <td>{{d.name}}</td>
+                <td>{{d.path}}</td>
+                <td>{{d.nodeVersion}}</td>
+                <td>{{d.startCmd}}</td>
+                <td>
+                  <button type="button" class="btn btn-info btn-xs" @click="showProjectInfo(d)">修改配置</button>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-xs" @click="startProject(d)">启动</button>
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a @click="openProjectInIDE(d)">在IDE中打开</a></li>
+                      <li><a @click="openProject(d)">打开文件夹</a></li>
+                      <li><a @click="buildProject(d)">构建项目</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal fade" id="systemModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title">系统配置</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>name</label>
+                <input type="text" class="form-control" placeholder="Enter name" v-model="addInfo.name">
+              </div>
+              <div class="form-group">
+                <label>path</label>
+                <input type="text" class="form-control" placeholder="Enter path" v-model="addInfo.path">
+              </div>
+              <div class="form-group">
+                <label>startCmd</label>
+                <input type="text" class="form-control" placeholder="Enter startCmd" v-model="addInfo.startCmd">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" @click="saveProjectInfo()">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>项目名字</label>
+                <input type="text" class="form-control" placeholder="Enter name" v-model="addInfo.name">
+              </div>
+              <div class="form-group">
+                <label>Node环境版本</label>
+                <input type="text" class="form-control" placeholder="Enter name" v-model="addInfo.nodeVersion">
+              </div>
+              <div class="form-group">
+                <label>文件路径</label>
+                <input type="text" class="form-control" placeholder="Enter path" v-model="addInfo.path">
+              </div>
+              <div class="form-group">
+                <label>启动命令</label>
+                <input type="text" class="form-control" placeholder="Enter startCmd" v-model="addInfo.startCmd">
+              </div>
+              <div class="form-group">
+                <label>构建命令</label>
+                <input type="text" class="form-control" placeholder="Enter startCmd" v-model="addInfo.buildCmd">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" @click="saveProjectInfo()">保存</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+    </div>
+  </div>
+</body>
+<!-- build:remove -->
+<!-- Connect to server process -->
+<script>
+require('electron-connect').client.create()
+</script>
+<!-- end:build -->
+<!-- <script type="text/javascript" src="../base/vue.js"></script> -->
+<script type="text/javascript" src="../js/base.js"></script>
+
+</html>

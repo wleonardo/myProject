@@ -1,0 +1,5 @@
+[{
+  "name": "weaver",
+  "path": "/weaver",
+  "startCmd": "gulp serve"
+}]
