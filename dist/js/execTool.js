@@ -14,11 +14,16 @@ exports.openNewTerminal = function(path, cmd) {
 }
 
 exports.runCmd = function(path, cmd, callback) {
-  exec(`osascript <<END 
-        tell application "Terminal"
-          do script "cd ${path}&&${cmd}"
-        end tell
-        END`, {}, callback)
+  return new Promise((resolve, reject) => {
+    exec(cmd, {}, (errCode, output) => {
+      if (errCode) {
+        reject(errCode);
+      }else{
+        resolve(output);
+      }
+    });
+  })
+
 }
 
 exports.openFolder = function(path) {

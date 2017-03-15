@@ -15,46 +15,12 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">系统环境</h3>
-          <button type="button" class="btn pull-right btn-primary btn-xs" data-toggle="modal" data-target="#myModal">新增项目</button>
-          <button type="button" class="btn pull-right btn-info btn-xs" style="margin-right: 10px" @click="getNodeVersion()">系统配置</button>
         </div>
         <!-- /.box-header -->
         <a href="" v-for="d in projectInfo"></a>
         <div class="box-body">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <th style="width: 10px">#</th>
-                <th>项目名字</th>
-                <th>项目地址</th>
-                <th>Node版本</th>
-                <th>启动命令</th>
-                <th style="width: 150px">操作</th>
-              </tr>
-              <tr v-for="d in projectInfo">
-                <td>{{$index + 1}}</td>
-                <td>{{d.name}}</td>
-                <td>{{d.path}}</td>
-                <td>{{d.nodeVersion}}</td>
-                <td>{{d.startCmd}}</td>
-                <td>
-                  <button type="button" class="btn btn-info btn-xs" @click="showProjectInfo(d)">修改配置</button>
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-xs" @click="startProject(d)">启动</button>
-                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                      <li><a @click="openProjectInIDE(d)">在IDE中打开</a></li>
-                      <li><a @click="openProject(d)">打开文件夹</a></li>
-                      <li><a @click="buildProject(d)">构建项目</a></li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <p><span>Node版本</span><span>{{envir.nodeVersion}}</span></p>
+          <p><span>Npm版本</span><span>{{envir.npmVersion}}</span></p>
         </div>
       </div>
       <div class="box">

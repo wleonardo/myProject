@@ -1,23 +1,34 @@
 const fs = require('fs');
 const _ = require('../base/lodash.core.min.js');
 var tool = require('./execTool.js');
-const {desktopCapturer} = require('electron');
+const { desktopCapturer } = require('electron');
 
 new Vue({
   el: '#main',
   data: {
     projectInfo: [],
-    addInfo: {}
+    addInfo: {},
+    envir: {
+
+    }
   },
   methods: {
-    showProjectInfo: function(detail){
+    showProjectInfo: function(detail) {
       this.addInfo = detail;
       $('#myModal').modal();
     },
     getNodeVersion: function() {
-      tool.runCmd('~/Desktop', 'node --version', function(err, output){
-        console.log(err);
-        console.log(output);
+      tool.runCmd('~/Desktop', 'node --version').then((output) => {
+        console.log('node version is ' + output);
+        Vue.set(this.envir, 'nodeVersion', output);
+      }).catch((errCode) => {
+        console.error(errCode);
+      });
+      tool.runCmd('~/Desktop', 'npm --version').then((output) => {
+        console.log('npm version is ' + output);
+        Vue.set(this.envir, 'npmVersion', output);
+      }).catch((errCode) => {
+        console.error(errCode);
       });
     },
     getProjectInfo: function() {
@@ -27,7 +38,7 @@ new Vue({
       return projectInfo;
     },
     startProject: function(d) {
-     tool.openNewTerminal('~/Desktop' + d.path, `nvm use ${d.nodeVersion} && ${d.startCmd}`);
+      tool.openNewTerminal('~/Desktop' + d.path, `nvm use ${d.nodeVersion} && ${d.startCmd}`);
     },
     buildProject: function(d) {
       tool.openNewTerminal('~/Desktop' + d.path, d.buildCmd);
@@ -53,6 +64,9 @@ new Vue({
         this.projectInfo.push(this.addInfo);
       }
       this.projectInfo = JSON.parse(JSON.stringify(this.projectInfo));
+    },
+    init: function(){
+      this.getNodeVersion();
     }
   },
   watch: {
@@ -61,6 +75,7 @@ new Vue({
     }
   },
   ready: function() {
+    this.init();
     console.log(this.getProjectInfo());
   }
 });
